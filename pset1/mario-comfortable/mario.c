@@ -9,15 +9,38 @@ int main(void)
     {
         for (int i = 0; i < height; i++)
         {
-            for (int j = 0; j <= height - (2 + i); j++)
+            //adding additional loop to do mirroring
+            for (int m = 0; m < 2; m++)
             {
-                printf(" ");
+                if (m == 0)
+                {
+                    for (int j = 0; j < height - (i+1); j++)
+                    {
+                        printf(" ");
+                    }
+                    for (int k = 0; k <= i; k++)
+                    {
+                        printf("#");
+                    }
+                    //gap between two pyramids
+                    printf("  ");
+                }
+                else
+                {
+                    for (int k = 0; k <= i; k++)
+                    {
+                        printf("#");
+                    }
+                    //commenting out since hte blank spaces seem to be affecting submission
+                    /*
+                    for (int j = 0; j < height - (i+1); j++)
+                    {
+                        printf(" ");
+                    }
+                    */
+                    printf("\n");
+                }
             }
-            for (int k = 0; k < 2 + i; k++)
-            {
-                printf("#");
-            }
-            printf("\n");
         }
     }
     else
