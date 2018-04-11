@@ -39,3 +39,16 @@ int main(void)
 
     printf("%i\n", coins);
 }
+
+
+// ****** 0VERALL ******
+//it works!!
+
+// ****** SUGGESTIONS ******
+
+//COMMENTS:
+//could add a comment explaining what you are assigning to changeInt why you used round()
+
+//JUST FOR FUN:
+//excellect use of round() on line 16. (I couldn't figure this out in my code I kept getting errors)
+//line 14 is succinct, I never would have thought of this

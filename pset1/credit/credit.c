@@ -123,3 +123,19 @@ int main(void)
     }
     //printf("%i %i %i\n", firstTwo, numLen, checkSum);
 }
+
+
+// ****** 0VERALL ******
+//It works!
+
+
+// ****** SUGGESTIONS ******
+
+//COMMENTS:
+//excellent use of comments for clarity in formulas
+//might be helpful to use comments to explain some of the different variables (because there are so many)
+
+
+//FUNCTIONS:
+//Excellent use of Switch statement starting on 58
+

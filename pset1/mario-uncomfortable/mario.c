@@ -25,3 +25,19 @@ int main(void)
         main();
     }
 }
+
+// ****** 0VERALL ******
+//This works great!
+
+// ****** SUGGESTIONS ******
+
+//COMMENTS:
+//could make use of comments, maybe just clarify which loop is creating a row and which is printing characters in the line
+
+//FUNCTIONS:
+//I appreciate the if/else function
+//I used a do/while loop but this actually looks cleaner and probably takes fewer lines of code
+//line 25 is very creative and I never would have thought of it
+
+//JUST FOR FUN:
+//send a message for anyone taking more than a 5 minute shower that Captain Planet would be really disappointed if he found out
