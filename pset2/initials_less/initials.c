@@ -4,6 +4,12 @@
 #include <string.h>
 #include <ctype.h>
 
+// prc-matt - looks good, nice styling, style50 just picks up a couple of spacing errors but nothing major
+// prc-matt - your comments are very helpful, especially when it comes to the if statement, as someone might not know
+// off the top of their head what the 32 would mean
+
+
+
 int main (void)
 {
     string name = get_string("");

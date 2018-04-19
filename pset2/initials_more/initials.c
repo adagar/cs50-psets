@@ -4,6 +4,10 @@
 #include <string.h>
 #include <ctype.h>
 
+// prc-matt - i'm not sure if you meant to come back to this one, since i think it is the same code you used for initials(less)
+// which obviously would not work for this one. the basic code is the same for more it just needs some modifications
+// if you have time, definitely try to come back and finish it!
+
 int main (void)
 {
     string name = get_string("");
