@@ -1,4 +1,4 @@
-// Helper functions for music
+ // Helper functions for music
 
 #include <cs50.h>
 #include <math.h>
@@ -11,13 +11,13 @@
 // Converts a fraction formatted as X/Y to eighths
 int duration(string fraction)
 {
-    float numerator = fraction[0] - '0';
+    float numerator = fraction[0] - '0';  //jb-pr - subtracts the ascii number for 0 to get real decimal number
     float denominator = fraction[2] - '0';
 
     //convert fraction to 8ths, and return the number of 8ths note lasts for
     //ex 1/2 = 4/8's, 3/4 = 6/8
 
-    return (int)(numerator * (8.0 / denominator));
+    return (int)(numerator * (8.0 / denominator));  // jb-PR Int removes the decimal returning only the integer for the number of beats
 }
 
 // Calculates frequency (in Hz) of a note
@@ -44,7 +44,7 @@ int frequency(string note)
     int octave = 4;
     if (note[2] == '\0') //if no modifier
     {
-        mod = '\0';
+        mod = '\0';  // jb-pr- not necessary to identify the mod of \0
         octave = note[1] - '0';
     }
     else
@@ -56,7 +56,7 @@ int frequency(string note)
     //printf("Note: %c\n", mod);
     //multiply freq by num of octave changes
     //so A4 = 440, A5 = 880, A3 = 220
-    freq *= pow(2.0, octave - defOct);
+    freq *= pow(2.0, octave - defOct);  // jb-pr - I like how you keep altering freq.  I used different variables for each change to the frequency
     // printf("Octave modified it to: %i\n", (int)round(freq));
 
 
@@ -71,7 +71,7 @@ int frequency(string note)
             //eprintf("Flat!");
             powerFactor = -1.0 / 12.0;
             break;
-        case '\0'   :
+        case '\0'   :  // jb-pr - could have used a default case rather then specific one for \0
             //eprintf("Regular!");
             powerFactor = 0.0;
             break;
@@ -118,7 +118,7 @@ int frequency(string note)
 // Determines whether a string represents a rest
 bool is_rest(string s)
 {
-    if (s[0] == '\0')
+    if (s[0] == '\0')  // jb-pr - checks to see if the string in 0th postion is empty (I used strcmp)
     {
         return true;
     }
@@ -128,3 +128,4 @@ bool is_rest(string s)
     }
 }
 
+//-jb-pr - good clean code with lots of notes.  Makes it much easier to understand the logic however, slightly difficult to read due to extra text between lines. Consider moving notes alongside of the line of code.
