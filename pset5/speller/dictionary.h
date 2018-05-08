@@ -31,4 +31,5 @@ node_t;
 
 //linked list functions
 bool insert(char* word);
+void erase(node_t* n);
 #endif // DICTIONARY_H

@@ -24,7 +24,7 @@ bool check(const char *word)
         lowerWord[i] = tolower(word[i]);
     }
 
-    printf("Checking to see if %s is correctly spelled...\n", lowerWord);
+    //printf("Checking to see if %s is correctly spelled...\n", lowerWord);
     if (lowerWord == NULL)
     {
         return false;
@@ -38,7 +38,7 @@ bool check(const char *word)
         {
             if(strncmp(cursor->word, lowerWord, length) == 0)
             {
-                printf("%s is correctly spelled!\n", word);
+                //printf("%s is correctly spelled!\n", word);
                 return true;
             }
             else
@@ -47,14 +47,14 @@ bool check(const char *word)
             }
         }
     }
-    printf("%s is NOT correctly spelled!\n", word);
+    //printf("%s is NOT correctly spelled!\n", word);
     return false;
 }
 
 // Loads dictionary into memory, returning true if successful else false
 bool load(const char *dictionary)
 {
-    printf("Loading dictionary...\n");
+    //printf("Loading dictionary...\n");
 
     // open input file
     FILE *dictFile = fopen(dictionary, "r");
@@ -70,10 +70,10 @@ bool load(const char *dictionary)
     initList();
 
     //scan dictionary, word by word
-    printf("Begining Loading loop...\n");
+    //printf("Begining Loading loop...\n");
     while(fscanf(dictFile, "%s", word) != EOF)
     {
-        printf("Loading word %s...\n", word);
+        //printf("Loading word %s...\n", word);
 
 
         //malloc a new node for each word
@@ -102,14 +102,25 @@ unsigned int size(void)
 // Unloads dictionary from memory, returning true if successful else false
 bool unload(void)
 {
-    // TODO
-    return false;
+    for (int i = 0; i < BUCKETS; i++)
+    {
+        //printf("Sending the %c bucket for erasure...\n", i+'a');
+        node_t* head = &list[i];
+        erase(head);
+    }
+
+    free(list);
+    return true;
 }
 
 
 //hash function
 int hash(const char *word)
 {
+    if(strcmp(&word[0], "\'"))
+    {
+        return 27;
+    }
     return tolower(word[0]) - 'a';
 }
 
@@ -127,7 +138,13 @@ bool insert(char* word)
     //populate and insert node at beginning
         //link to whatever hash list currently pointing to
         //this will protect/maintain current link
-    new_node->next = head;
+
+    // if(head->next==NULL)
+    // {
+    //     printf("I'm unititiated head");
+    // }
+
+    new_node->next = head->next;
 
     //copy word to the new node
     strcpy(new_node->word, word);
@@ -144,7 +161,26 @@ void initList()
     list = (node_t*)malloc(sizeof(node_t) * BUCKETS);
     for(int i = 0; i < BUCKETS; i++)
     {
-        strcpy(list[i].word, "\0");
-        list[i].next = NULL;
+        node_t head = list[i];
+        strcpy(head.word, "\0");
+        head.next = NULL;
+    }
+}
+
+void erase(node_t* n)
+{
+    if (n->next == NULL)
+    {
+        return;
+    }
+    else
+    {
+        erase(n->next);
+        if (strcmp(n->word, "\0") == 0)
+        {
+            return;
+        }
+        //printf("erasing %s...\n", n->word);
+        free(n);
     }
 }
