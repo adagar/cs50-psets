@@ -10,7 +10,7 @@
 
 
 //create a global array to link to lists
-node* list;//[BUCKETS];
+node_t* list;//[BUCKETS];
 
 // Returns true if word is in dictionary else false
 bool check(const char *word)
@@ -33,23 +33,21 @@ bool check(const char *word)
     {
         //look in list[hash(lowerWord)] to see if this lowerWord is in there
         //create a node cursor to scan list, should start pointing to same pointer the head does
-        node *cursor = &list[hash(lowerWord)];
-        printf("Scanning %s...\n", cursor->word);
-        while (true)
+        node_t * cursor = &list[hash(lowerWord)];
+        while (cursor != NULL)//strncmp(cursor->word, "\0", length) != 0)
         {
-            if(cursor->word == lowerWord)
+            if(strncmp(cursor->word, lowerWord, length) == 0)
             {
+                printf("%s is correctly spelled!\n", word);
                 return true;
             }
             else
             {
-                if (strcmp(cursor->word, "\0"))
-                {
-                    return false;
-                }
+                cursor = cursor->next;
             }
         }
     }
+    printf("%s is NOT correctly spelled!\n", word);
     return false;
 }
 
@@ -79,7 +77,7 @@ bool load(const char *dictionary)
 
 
         //malloc a new node for each word
-        node *new_node = malloc(sizeof(node));
+        node_t *new_node = malloc(sizeof(node_t));
 
         // confirm new node is valid
         if(new_node == NULL)
@@ -88,14 +86,8 @@ bool load(const char *dictionary)
             return false;
         }
 
-        //copy word to the new node
-        strcpy(new_node->word, word);
-
-        //hash new word
-        int hashVal = hash(word);
-
         //outsource the insertion to a separate function
-        insert(new_node, hashVal);
+        insert(word);
     }
     return true;
 }
@@ -122,14 +114,26 @@ int hash(const char *word)
 }
 
 //hash table functions
-bool insert(node *n, int hashVal)
+bool insert(char* word)
 {
-    //link to whatever hash list currently pointing to
-    //this will protect/maintain current link
-    n->next = list[hashVal].next;
+    //get hash val
+    int hashVal = hash(word);
+    //get head val
+    node_t* head = &list[hashVal];
+
+    node_t* new_node = (node_t*) malloc(sizeof(node_t));
+    //allocate mem for new node
+    //make sure we're not out of memory
+    //populate and insert node at beginning
+        //link to whatever hash list currently pointing to
+        //this will protect/maintain current link
+    new_node->next = head;
+
+    //copy word to the new node
+    strcpy(new_node->word, word);
 
     //now that link is preserved, we can link list to this node
-    list[hashVal] = *n;
+    head->next = new_node;
 
     return true;
 }
@@ -137,7 +141,7 @@ bool insert(node *n, int hashVal)
 void initList()
 {
     //allocate memory to list buckets
-    list = malloc(sizeof(node) * BUCKETS);
+    list = (node_t*)malloc(sizeof(node_t) * BUCKETS);
     for(int i = 0; i < BUCKETS; i++)
     {
         strcpy(list[i].word, "\0");

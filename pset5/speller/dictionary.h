@@ -21,14 +21,14 @@ int hash(const char *word);
 void initList();
 
 //node structure
-typedef struct
+typedef struct node
 {
     char word[LENGTH+1];
     struct node* next;
 }
-node;
+node_t;
 
 
 //linked list functions
-bool insert(node *n, int hashVal);
+bool insert(char* word);
 #endif // DICTIONARY_H
