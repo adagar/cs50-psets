@@ -11,6 +11,7 @@
 
 //create a global array to link to lists
 node_t* list;//[BUCKETS];
+unsigned int dictSize;
 
 // Returns true if word is in dictionary else false
 bool check(const char *word)
@@ -24,7 +25,7 @@ bool check(const char *word)
         lowerWord[i] = tolower(word[i]);
     }
 
-    //printf("Checking to see if %s is correctly spelled...\n", lowerWord);
+    // fprintf("Checking to see if %s is correctly spelled...\n", lowerWord);
     if (lowerWord == NULL)
     {
         return false;
@@ -36,7 +37,8 @@ bool check(const char *word)
         node_t * cursor = &list[hash(lowerWord)];
         while (cursor != NULL)//strncmp(cursor->word, "\0", length) != 0)
         {
-            if(strncmp(cursor->word, lowerWord, length) == 0)
+            char* cursWord = cursor->word;
+            if(strncmp(cursWord, lowerWord, length) == 0 && strcmp(&cursWord[length], "\0") == 0)
             {
                 //printf("%s is correctly spelled!\n", word);
                 return true;
@@ -54,7 +56,7 @@ bool check(const char *word)
 // Loads dictionary into memory, returning true if successful else false
 bool load(const char *dictionary)
 {
-    //printf("Loading dictionary...\n");
+    printf("Loading dictionary...\n");
 
     // open input file
     FILE *dictFile = fopen(dictionary, "r");
@@ -73,7 +75,7 @@ bool load(const char *dictionary)
     //printf("Begining Loading loop...\n");
     while(fscanf(dictFile, "%s", word) != EOF)
     {
-        //printf("Loading word %s...\n", word);
+        // printf("Loading word %s...\n", word);
 
 
         //malloc a new node for each word
@@ -117,9 +119,9 @@ bool unload(void)
 //hash function
 int hash(const char *word)
 {
-    if(strcmp(&word[0], "\'"))
+    if(word[0] == 39)
     {
-        return 27;
+        return 26;
     }
     return tolower(word[0]) - 'a';
 }
@@ -151,6 +153,7 @@ bool insert(char* word)
 
     //now that link is preserved, we can link list to this node
     head->next = new_node;
+    dictSize++;
 
     return true;
 }
@@ -159,6 +162,8 @@ void initList()
 {
     //allocate memory to list buckets
     list = (node_t*)malloc(sizeof(node_t) * BUCKETS);
+    dictSize = 0;
+
     for(int i = 0; i < BUCKETS; i++)
     {
         node_t head = list[i];
@@ -169,6 +174,7 @@ void initList()
 
 void erase(node_t* n)
 {
+
     if (n->next == NULL)
     {
         return;
