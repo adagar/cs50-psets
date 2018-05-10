@@ -10,7 +10,7 @@
 
 
 //create a global array to link to lists
-node_t* list;//[BUCKETS];
+node_t *list; //[BUCKETS];
 unsigned int dictSize;
 
 // Returns true if word is in dictionary else false
@@ -19,9 +19,9 @@ bool check(const char *word)
     //create a lower case version of the word
     //TODO move this out to a function
     int length = strlen(word);
-    char *lowerWord = (char*)calloc(length + 1, sizeof(char));
+    char *lowerWord = (char *)calloc(length + 1, sizeof(char));
 
-    for(int i = 0; i < length; i++)
+    for (int i = 0; i < length; i++)
     {
         lowerWord[i] = tolower(word[i]);
     }
@@ -36,16 +36,18 @@ bool check(const char *word)
     {
         //look in list[hash(lowerWord)] to see if this lowerWord is in there
         //create a node cursor to scan list, should start pointing to same pointer the head does
-        node_t* cursor = &list[hash(lowerWord)];
+        node_t *cursor = NULL;
+        cursor = &list[hash(lowerWord)];
+        cursor = cursor->next;
         while (cursor != NULL)//strncmp(cursor->word, "\0", length) != 0)
         {
-            char* cursWord = cursor->word;
+            char *cursWord = cursor->word;
             if (cursWord == NULL)
             {
                 free(lowerWord);
                 return false;
             }
-            if(strncmp(cursWord, lowerWord, length) == 0 && strcmp(&cursWord[length], "\0") == 0)
+            if (strncmp(cursWord, lowerWord, length) == 0 && strcmp(&cursWord[length], "\0") == 0)
             {
                 //printf("%s is correctly spelled!\n", word);
                 free(lowerWord);
@@ -82,7 +84,7 @@ bool load(const char *dictionary)
 
     //scan dictionary, word by word
     //printf("Begining Loading loop...\n");
-    while(fscanf(dictFile, "%s", word) != EOF)
+    while (fscanf(dictFile, "%s", word) != EOF)
     {
         // printf("Loading word %s...\n", word);
 
@@ -91,7 +93,7 @@ bool load(const char *dictionary)
         node_t *new_node = malloc(sizeof(node_t));
 
         // confirm new node is valid
-        if(new_node == NULL)
+        if (new_node == NULL)
         {
             free(new_node);
             unload();
@@ -119,7 +121,7 @@ bool unload(void)
     for (int i = 0; i < BUCKETS; i++)
     {
         //printf("Sending the %c bucket for erasure...\n", i+'a');
-        node_t* head = &list[i];
+        node_t *head = &list[i];
         erase(&head);
     }
 
@@ -131,7 +133,7 @@ bool unload(void)
 //hash function
 int hash(const char *word)
 {
-    if(word[0] == 39)
+    if (word[0] == 39)
     {
         return 26;
     }
@@ -139,19 +141,19 @@ int hash(const char *word)
 }
 
 //hash table functions
-bool insert(char* word)
+bool insert(char *word)
 {
     //get hash val
     int hashVal = hash(word);
     //get head val
-    node_t* head = &list[hashVal];
+    node_t *head = &list[hashVal];
 
-    node_t* new_node = (node_t*) malloc(sizeof(node_t));
+    node_t *new_node = (node_t *) malloc(sizeof(node_t));
     //allocate mem for new node
     //make sure we're not out of memory
     //populate and insert node at beginning
-        //link to whatever hash list currently pointing to
-        //this will protect/maintain current link
+    //link to whatever hash list currently pointing to
+    //this will protect/maintain current link
 
     // if(head->next==NULL)
     // {
@@ -173,10 +175,10 @@ bool insert(char* word)
 void initList()
 {
     //allocate memory to list buckets
-    list = (node_t*)malloc(sizeof(node_t) * BUCKETS);
+    list = (node_t *)calloc(sizeof(node_t), BUCKETS);
     dictSize = 0;
 
-    for(int i = 0; i < BUCKETS; i++)
+    for (int i = 0; i < BUCKETS; i++)
     {
         node_t head = list[i];
         strcpy(head.word, "\0");
@@ -184,9 +186,9 @@ void initList()
     }
 }
 
-void erase(node_t** n)
+void erase(node_t **n)
 {
-    node_t* temp = *n;
+    node_t *temp = * n;
     if (temp == NULL)
     {
         return;
