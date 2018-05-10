@@ -19,7 +19,8 @@ bool check(const char *word)
     //create a lower case version of the word
     //TODO move this out to a function
     int length = strlen(word);
-    char *lowerWord = (char*)malloc(length + 1);
+    char *lowerWord = (char*)calloc(length + 1, sizeof(char));
+
     for(int i = 0; i < length; i++)
     {
         lowerWord[i] = tolower(word[i]);
@@ -35,10 +36,15 @@ bool check(const char *word)
     {
         //look in list[hash(lowerWord)] to see if this lowerWord is in there
         //create a node cursor to scan list, should start pointing to same pointer the head does
-        node_t * cursor = &list[hash(lowerWord)];
+        node_t* cursor = &list[hash(lowerWord)];
         while (cursor != NULL)//strncmp(cursor->word, "\0", length) != 0)
         {
             char* cursWord = cursor->word;
+            if (cursWord == NULL)
+            {
+                free(lowerWord);
+                return false;
+            }
             if(strncmp(cursWord, lowerWord, length) == 0 && strcmp(&cursWord[length], "\0") == 0)
             {
                 //printf("%s is correctly spelled!\n", word);
@@ -181,7 +187,7 @@ void initList()
 void erase(node_t** n)
 {
     node_t* temp = *n;
-    if (temp->next == NULL)
+    if (temp == NULL)
     {
         return;
     }
