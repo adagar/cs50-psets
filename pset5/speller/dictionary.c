@@ -28,6 +28,7 @@ bool check(const char *word)
     // fprintf("Checking to see if %s is correctly spelled...\n", lowerWord);
     if (lowerWord == NULL)
     {
+        free(lowerWord);
         return false;
     }
     else
@@ -41,6 +42,7 @@ bool check(const char *word)
             if(strncmp(cursWord, lowerWord, length) == 0 && strcmp(&cursWord[length], "\0") == 0)
             {
                 //printf("%s is correctly spelled!\n", word);
+                free(lowerWord);
                 return true;
             }
             else
@@ -50,6 +52,7 @@ bool check(const char *word)
         }
     }
     //printf("%s is NOT correctly spelled!\n", word);
+    free(lowerWord);
     return false;
 }
 
@@ -84,13 +87,16 @@ bool load(const char *dictionary)
         // confirm new node is valid
         if(new_node == NULL)
         {
+            free(new_node);
             unload();
             return false;
         }
 
         //outsource the insertion to a separate function
         insert(word);
+        free(new_node);
     }
+    fclose(dictFile);
     return true;
 }
 
@@ -98,7 +104,7 @@ bool load(const char *dictionary)
 unsigned int size(void)
 {
     // TODO
-    return 0;
+    return dictSize;
 }
 
 // Unloads dictionary from memory, returning true if successful else false
@@ -108,7 +114,7 @@ bool unload(void)
     {
         //printf("Sending the %c bucket for erasure...\n", i+'a');
         node_t* head = &list[i];
-        erase(head);
+        erase(&head);
     }
 
     free(list);
@@ -172,21 +178,21 @@ void initList()
     }
 }
 
-void erase(node_t* n)
+void erase(node_t** n)
 {
-
-    if (n->next == NULL)
+    node_t* temp = *n;
+    if (temp->next == NULL)
     {
         return;
     }
     else
     {
-        erase(n->next);
-        if (strcmp(n->word, "\0") == 0)
+        erase(&temp->next);
+        if (strcmp(temp->word, "\0") == 0)
         {
             return;
         }
-        //printf("erasing %s...\n", n->word);
-        free(n);
+        //printf("erasing %s...\n", temp->word);
+        free(temp);
     }
 }
